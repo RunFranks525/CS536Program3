@@ -72,15 +72,43 @@ terminal                ASSIGN;
  * NOTE: You will need to add more nonterminals to this list as you
  *       add productions to the grammar below.
  */
-non terminal ProgramNode      program;
-non terminal LinkedList       declList;
-non terminal DeclNode         decl;
-non terminal VarDeclNode      varDecl;
-non terminal TypeNode         type;
-non terminal IdNode           id;
+
+//TODO: go through and verify with ast.java that the tree structure matches the grammer
+non terminal ProgramNode      program; 		//***given***
+non terminal LinkedList       declList; 	//***given***
+non terminal DeclNode         decl;		//***given***
+non terminal DeclListNode     varDeclList;	//seems to make sense
+non terminal VarDeclNode      varDecl;		//***given***
+non terminal FnDeclNode       fnDecl;		//good
+non terminal StructDeclNode   structDecl;	//good
+non terminal DeclListNode     structBody;	//seems like it would make sense based on ast definition
+
+non terminal FormalsListNode  formals;		//Not sure with Formals and FormalsList
+non terminal LinkedList	      formalsList; 	//Not sure with Formals and FormalsList
+
+non terminal FormalDeclNode   formalDecl; 	//good
+non terminal FnBodyNode       fnBody; 		//good
+non terminal StmtListNode     stmtList; 	//pretty sure this is right
+non terminal StmtNode	      stmt; 		//good
+non terminal AssignStmtNode   assignExp; 	//pretty sure this is right, otherwise AssignNode
+non terminal ExpNode	      exp;		//good
+non terminal			term; 		//not sure what type this would be
+non terminal			fnCall; 	//CallStmtNode or CallExpNode?
+non terminal LinkedList	      actualList;
+non terminal TypeNode         type;		//***given***
+non terminal			loc; 		//Not sure on type
+non terminal IdNode           id;		//***given***
  
  
 /* NOTE: Add precedence and associativity declarations here */
+
+precedence right ASSIGN;
+precedence left OR;
+precedence left AND;
+precedence nonassoc LESS, GREATER, LESSEQ, GREATEREQ, EQUALS, NOTEQUALS;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIVIDE;
+precedence left NOT;
 
 
 start with program;
