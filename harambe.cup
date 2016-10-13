@@ -143,6 +143,101 @@ varDecl         ::= type:t id:i SEMICOLON
                 :}
                 ;
 
+//TODO: complete this rule
+varDeclList	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+fnDecl		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+structDecl	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+structBody	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+formals		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+formalsList	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+formalDecl	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+fnBody		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+stmtList	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+stmt		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+assignExp	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+exp		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+term		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+fnCall		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+actualList	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+loc		::=
+		{: RESULT =
+		:}
+		;
 type            ::= INT
                 {: RESULT = new IntNode();
                 :}
