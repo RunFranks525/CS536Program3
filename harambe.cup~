@@ -102,6 +102,7 @@ non terminal IdNode           id;		//***given***
  
 /* NOTE: Add precedence and associativity declarations here */
 
+
 precedence right ASSIGN;
 precedence left OR;
 precedence left AND;
@@ -142,9 +143,137 @@ varDecl         ::= type:t id:i SEMICOLON
                 :}
                 ;
 
+// TODO: check w Scott
+varDeclList	::= varDeclList: vdl varDecl: vd
+		{: vdl.addLast(vd);
+		   RESULT = vdl;
+		:}
+		| /* epsilon */
+		{: RESULT = new LinkedList<VarDeclNode>();
+		:}
+		;
+
+//TODO: complete this rule
+fnDecl		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+structDecl	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+structBody	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+formals		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+formalsList	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+formalDecl	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+fnBody		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+stmtList	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+stmt		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+assignExp	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+exp		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+term		::= loc:l
+		{: RESULT =
+		:}
+		| INTLITERAL:ilit
+		{: RESULT = new IntLitNode(ilit.lineNum, ilit.charNum, ilit.intval);
+		:}
+		| SRINGLITERAL:strlit
+		{: RESULT = new StringLitNode(strlit.lineNum, strlit.charNum, strlit.strVal);
+		:}
+		| TRUE
+		{: RESULT = true;
+		:}
+		| FALSE
+		{: RESULT = false;
+		:}
+		| LPAREN exp:e RPAREN
+		{: RESULT = 
+		:}
+		| fncall:f
+		{: RESULT = 
+		:}
+		;
+
+//TODO: complete this rule
+fnCall		::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+actualList	::=
+		{: RESULT =
+		:}
+		;
+
+//TODO: complete this rule
+loc		::= id:i
+		{: RESULT =
+		:}
+		| loc:l DOT id:i
+		{:
+		:}
+		;
+
+//TODO: check w Scott
 type            ::= INT
                 {: RESULT = new IntNode();
                 :}
+		| BOOL
+		{: RESULT = new BoolNode();
+		:}
+		| VOID
+		{: RESULT = new VoidNode();
+		:}
                 ;
 
 id              ::= ID:i
