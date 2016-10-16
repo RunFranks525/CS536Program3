@@ -173,7 +173,8 @@ class FnBodyNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-      myDecl
+      myDeclList.unparse(p, 4);
+      myStmtList.unparse(p, 4);
     }
 
     // 2 kids
@@ -187,6 +188,11 @@ class StmtListNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      Iterator<StmtNode> itr = myStmts.iterator();
+      while(itr.hasNext()){
+        StmtNode currentStmt = itr.next();
+        currentStmt.unparse(p, 0);
+      }
     }
 
     // list of kids (StmtNodes)
@@ -368,7 +374,8 @@ class PostIncStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-      p.print(myExp.unparse(p, 0) + "++");
+      myExp.unparse(p, 0);
+      p.print("++;\n");
     }
 
     // 1 kid
@@ -381,7 +388,8 @@ class PostDecStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-      p.print(myExp.unparse(p, 0) + "--");
+      myExp.unparse(p, 0)
+      p.print("--;\n");
     }
 
     // 1 kid
@@ -396,7 +404,8 @@ class ReadStmtNode extends StmtNode {
     public void unparse(PrintWriter p, int indent) {
       p.print("cin <<");
       myExp.unparse(p, 0);
-      p.print(">>");    }
+      p.print(">>;\n");
+    }
 
     // 1 kid (actually can only be an IdNode or an ArrayExpNode)
     private ExpNode myExp;
@@ -410,7 +419,7 @@ class WriteStmtNode extends StmtNode {
     public void unparse(PrintWriter p, int indent) {
       p.print("cout <<");
       myExp.unparse(p, 0);
-      p.print(">>");
+      p.print(">>;\n");
     }
 
     // 1 kid
@@ -430,7 +439,7 @@ class IfStmtNode extends StmtNode {
       p.print(") {");
       myDeclList.unparse(p, 4);
       myStmtList.unparse(p, 4);
-      p.print("}");
+      p.print("}\n");
 
     }
 
@@ -460,7 +469,7 @@ class IfElseStmtNode extends StmtNode {
       p.print(" } else { ");
       myElseDeclList.unparse(p, 4);
       myElseStmtList.unparse(p, 4);
-      p.print("}");
+      p.print("}\n");
     }
 
     // 5 kids
@@ -484,7 +493,7 @@ class WhileStmtNode extends StmtNode {
       p.print(") {");
       myDeclList.unparse(p, 4);
       myStmtList.unparse(p, 4);
-      p.print("}");
+      p.print("}\n");
     }
 
     // 3 kids
@@ -499,6 +508,7 @@ class CallStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      myCall.unparse(p, 0);
     }
 
     // 1 kid
@@ -513,6 +523,7 @@ class ReturnStmtNode extends StmtNode {
     public void unparse(PrintWriter p, int indent) {
       p.print("return ");
       myExp.unparse(p, 0);
+      p.print(";\n")
     }
 
     // 1 kid
@@ -565,7 +576,7 @@ class TrueNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-      p.print("true ");
+      p.print("true");
     }
 
     private int myLineNum;
@@ -579,7 +590,7 @@ class FalseNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-      p.print("false ");
+      p.print("false");
     }
 
     private int myLineNum;
@@ -630,7 +641,7 @@ class AssignNode extends ExpNode {
       myLhs.unparse(p, indent);
       p.print(" = ");
       myExp.unparse(p, indent);
-      p.print("; \n")
+      p.print(";\n")
     }
 
     // 2 kids
@@ -652,6 +663,22 @@ class CallExpNode extends ExpNode {
     // ** unparse **
     public void unparse(PrintWriter p, int indent) {
 
+        try{
+          myId.unparse(p, 0);
+          p.print("(");
+          Iterator<ExpNode> itr = new Iterator<ExpNode>();
+          while(itr.hasNext()) {
+            ExpNode currentNode = itr.next();
+            currentNode.unparse(p, 0);
+            p.print(", ");
+          }
+          p.print(");\n");
+        } catch (NullPointerException ex){
+          System.err.println("unexpected null element in ExpList")
+        } catch (NoSuchElementException ex) {
+            System.err.println("unexpected NoSuchElementException in ExpListNode.print");
+            System.exit(-1);
+        }
     }
 
     // 2 kids
@@ -718,7 +745,7 @@ class PlusNode extends BinaryExpNode {
     public void unparse(PrintWriter p, int indent) {
       p.print("(");
       exp1.unparse(p, indent);
-      p.print("+");
+      p.print(" + ");
       exp2.unparse(p, indent);
       p.print(")");
     }
