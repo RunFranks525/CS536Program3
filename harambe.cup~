@@ -229,34 +229,34 @@ stmt		::= assignExp:ae SEMICOLON
 		{: RESULT = ae
 		:}
 		| loc:l PLUSPLUS SEMICOLON 
-		{: RESULT = 
+		{: RESULT = new PostIncStmtNode(l);
 		:}
 		| loc:l MINUSMINUS SEMICOLON 
-		{: RESULT = 
+		{: RESULT = new PostDecStmtNode(l);
 		:}
 		| CIN READ loc:l SEMICOLON
-		{: RESULT = 
+		{: RESULT = new ReadStmtNode();
 		:}
 		| COUT WRITE exp:e SEMICOLON
-		{: RESULT = 
+		{: RESULT = new WriteStmtNode();
 		:}
-		| IF LPAREN exp:e RPAREN LCURLY varDeclList stmtList:sl RCURLY
-		{: RESULT =
+		| IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:sl RCURLY
+		{: RESULT = new IfStmtNode(e, vdl, sl);
 		:}
-		| IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:sl RCURLY ELSE LCURLY varDeclList:vdl stmtList:sl RCURLY
-		{: RESULT = 
+		| IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl1 stmtList:sl1 RCURLY ELSE LCURLY varDeclList:vdl2 stmtList:sl2 RCURLY
+		{: RESULT = new IfElseStmtNode(e, vdl1, sl1, vdl2, sl2);
 		:}
 		| WHILE LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:sl RCURLY
-		{: RESULT =
+		{: RESULT = new WhileStmtNode(e, vdl, sl);
 		:}
 		| RETURN exp:e SEMICOLON
-		{: RESULT = 
+		{: RESULT = new ReturnStmtNode(e);
 		:}
 		| RETURN SEMICOLON
-		{: RESULT =
+		{: RESULT = new ReturnStmtNode(new ExpNode());
 		:}
 		| fncall:fc SEMICOLON
-		{:
+		{: RESULT = new CallStmtNode(fc);
 		:}
 		;
 
