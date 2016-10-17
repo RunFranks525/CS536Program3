@@ -202,14 +202,17 @@ fnBody		::=
 		;
 
 //TODO: complete this rule
-stmtList	::=
-		{: RESULT =
+stmtList	::= stmtList:sl stmt:s
+		{: RESULT = sl.addLast(s);
+		:}
+		| /* epsilon */
+		{: RESULT = new LinkedList<StmtNode>();
 		:}
 		;
 
 //TODO: complete this rule
-stmt		::=
-		{: RESULT =
+stmt		::= assignExp:ae
+		{: RESULT = ae
 		:}
 		;
 
@@ -220,14 +223,56 @@ assignExp	::=
 		;
 
 //TODO: complete this rule
-exp		::=
+exp		::= assignExp:ae
 		{: RESULT =
 		:}
+		| exp:e1 PLUS exp:e2
+		{: RESULT = new PlusNode(e1, e2);
+		:}
+		| exp:e1 MINUS exp:e2
+		{: RESULT = new IntNode(e1.intValue() - e2.intValue());
+		:}
+		| exp:e1 TIMES exp:e2
+		{: RESULT = new IntNode(e1.intValue() * e2.intValue());
+		:}
+		| exp:e1 DIVIDE exp:e2
+		{: RESULT = new IntNode(e1.intValue() / e2.intValue());
+		:}
+		| NOT exp:e
+		{: RESULT = new Boolean(!e.booleanValue());
+		:}
+		| exp:e1 AND exp:e2
+		{: RESULT = new Boolean(e1.booleanValue() && e2.booleanValue());
+		:}
+		| exp:e1 OR exp:e2
+		{: RESULT = new Boolean(e1.booleanValue() || e2.booleanValue());
+		:}
+		| exp:e1 EQUALS exp:e2
+		{: RESULT = new Boolean(e1.booleanValue() == e2.booleanValue());
+		:}
+		| exp:e1 NOTEQUALS exp:e2
+		{: RESULT = new Boolean(e1.booleanValue() != e2.booleanValue());
+		:}
+		| exp:e1 LESS exp:e2
+		{: RESULT = new Boolean(e1.intValue() < e2.intValue());
+		:}
+		| exp:e1 GREATER exp:e2
+		{: RESULT = new Boolean(e1.intValue() > e2.intValue());
+		:}
+		| exp:e1 LESSEQ exp:e2
+		{: RESULT = new Boolean(e1.intValue() <= e2.intValue());
+		:}
+		| exp:e1 GREATEREQ exp:e2
+		{: RESULT = new Boolean(e1.intValue() >= e2.intValue());
+		:}
+		| MINUS term:t
+		{: RESULT = new Integer(e1.intValue() >= e2.intValue());
+		:}		
 		;
 
 //TODO: complete this rule
 term		::= loc:l
-		{: RESULT =
+		{: RESULT = //something
 		:}
 		| INTLITERAL:ilit
 		{: RESULT = new IntLitNode(ilit.lineNum, ilit.charNum, ilit.intval);
@@ -242,10 +287,10 @@ term		::= loc:l
 		{: RESULT = false;
 		:}
 		| LPAREN exp:e RPAREN
-		{: RESULT = 
+		{: RESULT = //something
 		:}
 		| fncall:f
-		{: RESULT = 
+		{: RESULT = //something
 		:}
 		;
 
