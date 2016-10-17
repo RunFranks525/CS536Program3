@@ -167,34 +167,38 @@ fnDecl		::= type:t id:i formals:f fnBody:fb
 
 //TODO: complete this rule
 structDecl	::= STRUCT id:i LCURLY structBody:sb RCURLY SEMICOLON
-		{: RESULT =
+		{: RESULT = new StructDeclNode(i, sb);
 		:}
 		;
 
 //TODO: complete this rule
 structBody	::= structBody:sb varDecl:vd
-		{: RESULT =
+		{: sb.addLast(vd);
+		   RESULT = sb;
 		:}
 		| varDecl:vd
-		{: RESULT = 
+		{: List<DeclNode> sb = new LinkedList<DeclNode>());
+		   sb.addLast(vd);
+		   RETURN sb;
 		:}
 		;
 
 //TODO: complete this rule
 formals		::= LPAREN RPAREN
-		{: RESULT =
+		{: RESULT = new FormalsListNode(new LinkedList<FormalDeclNode>());
 		:}
 		| formalDecl:fd COMMA formalsList:fl
-		{: RESULT =
+		{: RESULT = 
 		:}
 		;
 
 //TODO: complete this rule
 formalsList	::= formalDecl:fd
-		{: RESULT =
+		{: FormalsListNode fl = new FormalsListNode()
+		   RESULT = 
 		:}
 		| formalDecl:fd COMMA formalsList:fl
-		{: RESULT =
+		{: RESULT = fl.add
 		:}
 		;
 
