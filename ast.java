@@ -217,6 +217,7 @@ class ExpListNode extends ASTnode {
       while(itr.hasNext()){
         ExpNode currentNode = itr.next();
         currentNode.unparse(p, indent + 4);
+        p.print(", ");
       }
     }
 
@@ -696,22 +697,10 @@ class CallExpNode extends ExpNode {
 
     public void unparse(PrintWriter p, int indent) {
         doIndent(p, indent);
-        try{
-          myId.unparse(p, 0);
-          p.print("(");
-          Iterator<ExpNode> itr = myExpList.iterator();
-          while(itr.hasNext()) {
-            ExpNode currentNode = itr.next();
-            currentNode.unparse(p, 0);
-            p.print(", ");
-          }
-          p.print(");\n");
-        } catch (NullPointerException ex){
-          System.err.println("unexpected null element in ExpList");
-        } catch (NoSuchElementException ex) {
-            System.err.println("unexpected NoSuchElementException in ExpListNode.print");
-            System.exit(-1);
-        }
+        myId.unparse(p, 0);
+        p.print("(");
+        myExpList.unparse(p, 0);
+        p.print(");\n");
     }
 
     // 2 kids
