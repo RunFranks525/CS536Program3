@@ -90,13 +90,13 @@ non terminal FormalDeclNode   formalDecl; 	//good
 non terminal FnBodyNode       fnBody; 		//good
 non terminal StmtListNode     stmtList; 	//pretty sure this is right
 non terminal StmtNode	      stmt; 		//good
-non terminal AssignStmtNode   assignExp; 	//pretty sure this is right, otherwise AssignNode
+non terminal AssignNode       assignExp; 	//pretty sure this is right
 non terminal ExpNode	      exp;		//good
 non terminal			term; 		//not sure what type this would be
 non terminal			fnCall; 	//CallStmtNode or CallExpNode?
 non terminal LinkedList	      actualList;
 non terminal TypeNode         type;		//***given***
-non terminal			loc; 		//Not sure on type
+non terminal DotAccessNode    loc; 		//Not sure on type
 non terminal IdNode           id;		//***given***
  
  
@@ -257,8 +257,8 @@ stmt		::= assignExp:ae SEMICOLON
 		;
 
 //TODO: complete this rule
-assignExp	::=
-		{: RESULT =
+assignExp	::= loc ASSIGN exp
+		{: RESULT = new AssignStmtNode(new Assign)
 		:}
 		;
 
@@ -312,7 +312,7 @@ exp		::= assignExp:ae
 
 //TODO: complete this rule
 term		::= loc:l
-		{: RESULT = //something
+		{: RESULT = new DotAccessNode();
 		:}
 		| INTLITERAL:ilit
 		{: RESULT = new IntLitNode(ilit.lineNum, ilit.charNum, ilit.intval);
@@ -352,10 +352,10 @@ actualList	::= exp:e
 
 //TODO: complete this rule
 loc		::= id:i
-		{: RESULT =
+		{: RESULT = new IdNode();
 		:}
 		| loc:l DOT id:i
-		{: RESULT =
+		{: l.add
 		:}
 		;
 

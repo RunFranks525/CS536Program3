@@ -96,7 +96,7 @@ non terminal			term; 		//not sure what type this would be
 non terminal			fnCall; 	//CallStmtNode or CallExpNode?
 non terminal LinkedList	      actualList;
 non terminal TypeNode         type;		//***given***
-non terminal			loc; 		//Not sure on type
+non terminal DotAccessNode    loc; 		//Not sure on type
 non terminal IdNode           id;		//***given***
  
  
@@ -257,7 +257,7 @@ stmt		::= assignExp:ae SEMICOLON
 		;
 
 //TODO: complete this rule
-assignExp	::=
+assignExp	::= loc ASSIGN exp
 		{: RESULT =
 		:}
 		;
@@ -312,7 +312,7 @@ exp		::= assignExp:ae
 
 //TODO: complete this rule
 term		::= loc:l
-		{: RESULT = //something
+		{: RESULT = new DotAccessNode();
 		:}
 		| INTLITERAL:ilit
 		{: RESULT = new IntLitNode(ilit.lineNum, ilit.charNum, ilit.intval);
@@ -352,10 +352,10 @@ actualList	::= exp:e
 
 //TODO: complete this rule
 loc		::= id:i
-		{: RESULT =
+		{: RESULT = new IdNode();
 		:}
 		| loc:l DOT id:i
-		{: RESULT =
+		{: l.add
 		:}
 		;
 
