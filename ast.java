@@ -210,6 +210,11 @@ class ExpListNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      Iterator itr = myExps.iterator();
+      while(itr.hasNext()){
+        ExpNode currentNode = myExps.iterator();
+        currentNode.unparse(p, indent);
+      }
     }
 
     // list of kids (ExpNodes)
@@ -274,6 +279,7 @@ class FormalDeclNode extends DeclNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       myType.unparse(p, 0);
       IdNode.unparse(p, 0);
       p.print(";\n");
@@ -291,6 +297,7 @@ class StructDeclNode extends DeclNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("struct ");
       myId.unparse(p, 0);
       p.print(" {");
