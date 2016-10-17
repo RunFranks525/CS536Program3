@@ -160,50 +160,60 @@ varDeclList	::= varDeclList: vdl varDecl: vd
 		;
 
 //TODO: complete this rule
-fnDecl		::=
+fnDecl		::= type:t id:i formals:f fnBody:fb
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
-structDecl	::=
+structDecl	::= STRUCT id:i LCURLY structBody:sb RCURLY SEMICOLON
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
-structBody	::=
+structBody	::= structBody:sb varDecl:vd
+		{: RESULT =
+		:}
+		| varDecl:vd
+		{: RESULT = 
+		:}
+		;
+
+//TODO: complete this rule
+formals		::= LPAREN RPAREN
+		{: RESULT =
+		:}
+		| formalDecl:fd COMMA formalsList:fl
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
-formals		::=
+formalsList	::= formalDecl:fd
+		{: RESULT =
+		:}
+		| formalDecl:fd COMMA formalsList:fl
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
-formalsList	::=
+formalDecl	::= type:t id:i
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
-formalDecl	::=
-		{: RESULT =
-		:}
-		;
-
-//TODO: complete this rule
-fnBody		::=
+fnBody		::= LCURLY varDeclList:vdl stmtList:sl RCURLY
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
 stmtList	::= stmtList:sl stmt:s
-		{: RESULT = sl.addLast(s);
+		{: sl.addLast(s);
+		   RESULT = sl;
 		:}
 		| /* epsilon */
 		{: RESULT = new LinkedList<StmtNode>();
@@ -211,8 +221,38 @@ stmtList	::= stmtList:sl stmt:s
 		;
 
 //TODO: complete this rule
-stmt		::= assignExp:ae
+stmt		::= assignExp:ae SEMICOLON
 		{: RESULT = ae
+		:}
+		| loc:l PLUSPLUS SEMICOLON 
+		{: RESULT = 
+		:}
+		| loc:l MINUSMINUS SEMICOLON 
+		{: RESULT = 
+		:}
+		| CIN READ loc:l SEMICOLON
+		{: RESULT = 
+		:}
+		| COUT WRITE exp:e SEMICOLON
+		{: RESULT = 
+		:}
+		| IF LPAREN exp:e RPAREN LCURLY varDeclList stmtList:sl RCURLY
+		{: RESULT =
+		:}
+		| IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:sl RCURLY ELSE LCURLY varDeclList:vdl stmtList:sl RCURLY
+		{: RESULT = 
+		:}
+		| WHILE LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:sl RCURLY
+		{: RESULT =
+		:}
+		| RETURN exp:e SEMICOLON
+		{: RESULT = 
+		:}
+		| RETURN SEMICOLON
+		{: RESULT =
+		:}
+		| fncall:fc SEMICOLON
+		{:
 		:}
 		;
 
@@ -230,43 +270,43 @@ exp		::= assignExp:ae
 		{: RESULT = new PlusNode(e1, e2);
 		:}
 		| exp:e1 MINUS exp:e2
-		{: RESULT = new IntNode(e1.intValue() - e2.intValue());
+		{: RESULT = new MinusNode(e1, e2);
 		:}
 		| exp:e1 TIMES exp:e2
-		{: RESULT = new IntNode(e1.intValue() * e2.intValue());
+		{: RESULT = new TimesNode(e1, e2);
 		:}
 		| exp:e1 DIVIDE exp:e2
-		{: RESULT = new IntNode(e1.intValue() / e2.intValue());
+		{: RESULT = new DivideNode(e1, e2);
 		:}
 		| NOT exp:e
-		{: RESULT = new Boolean(!e.booleanValue());
+		{: RESULT = new NotNode(e)
 		:}
 		| exp:e1 AND exp:e2
-		{: RESULT = new Boolean(e1.booleanValue() && e2.booleanValue());
+		{: RESULT = new AndNode(e1, e2);
 		:}
 		| exp:e1 OR exp:e2
-		{: RESULT = new Boolean(e1.booleanValue() || e2.booleanValue());
+		{: RESULT = new OrNode(e1, e2);
 		:}
 		| exp:e1 EQUALS exp:e2
-		{: RESULT = new Boolean(e1.booleanValue() == e2.booleanValue());
+		{: RESULT = new EqualsNode(e1, e2);
 		:}
 		| exp:e1 NOTEQUALS exp:e2
-		{: RESULT = new Boolean(e1.booleanValue() != e2.booleanValue());
+		{: RESULT = new NotEqualsNode(e1, e2);
 		:}
 		| exp:e1 LESS exp:e2
-		{: RESULT = new Boolean(e1.intValue() < e2.intValue());
+		{: RESULT = new LessNode(e1, e2);
 		:}
 		| exp:e1 GREATER exp:e2
-		{: RESULT = new Boolean(e1.intValue() > e2.intValue());
+		{: RESULT = new GreaterNode(e1, e2);
 		:}
 		| exp:e1 LESSEQ exp:e2
-		{: RESULT = new Boolean(e1.intValue() <= e2.intValue());
+		{: RESULT = new LessEqNode(e1, e2);
 		:}
 		| exp:e1 GREATEREQ exp:e2
-		{: RESULT = new Boolean(e1.intValue() >= e2.intValue());
+		{: RESULT = new GreaterEqNode(e1, e2);
 		:}
 		| MINUS term:t
-		{: RESULT = new Integer(e1.intValue() >= e2.intValue());
+		{: RESULT = new UnaryMinusNode(t);
 		:}		
 		;
 
@@ -295,15 +335,19 @@ term		::= loc:l
 		;
 
 //TODO: complete this rule
-fnCall		::=
+fnCall		::= id:i LPAREN RPAREN
+		{: RESULT =
+		:}
+		| id:i LPAREN actualList:al RPAREN
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
-actualList	::=
+actualList	::= exp:e
 		{: RESULT =
 		:}
+		| actualList:al COMMA exp:e
 		;
 
 //TODO: complete this rule
@@ -311,7 +355,7 @@ loc		::= id:i
 		{: RESULT =
 		:}
 		| loc:l DOT id:i
-		{:
+		{: RESULT =
 		:}
 		;
 

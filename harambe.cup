@@ -160,50 +160,60 @@ varDeclList	::= varDeclList: vdl varDecl: vd
 		;
 
 //TODO: complete this rule
-fnDecl		::=
+fnDecl		::= type:t id:i formals:f fnBody:fb
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
-structDecl	::=
+structDecl	::= STRUCT id:i LCURLY structBody:sb RCURLY SEMICOLON
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
-structBody	::=
+structBody	::= structBody:sb varDecl:vd
+		{: RESULT =
+		:}
+		| varDecl:vd
+		{: RESULT = 
+		:}
+		;
+
+//TODO: complete this rule
+formals		::= LPAREN RPAREN
+		{: RESULT =
+		:}
+		| formalDecl:fd COMMA formalsList:fl
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
-formals		::=
+formalsList	::= formalDecl:fd
+		{: RESULT =
+		:}
+		| formalDecl:fd COMMA formalsList:fl
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
-formalsList	::=
+formalDecl	::= type:t id:i
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
-formalDecl	::=
-		{: RESULT =
-		:}
-		;
-
-//TODO: complete this rule
-fnBody		::=
+fnBody		::= LCURLY varDeclList:vdl stmtList:sl RCURLY
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
 stmtList	::= stmtList:sl stmt:s
-		{: RESULT = sl.addLast(s);
+		{: sl.addLast(s);
+		   RESULT = sl;
 		:}
 		| /* epsilon */
 		{: RESULT = new LinkedList<StmtNode>();
@@ -211,8 +221,38 @@ stmtList	::= stmtList:sl stmt:s
 		;
 
 //TODO: complete this rule
-stmt		::= assignExp:ae
+stmt		::= assignExp:ae SEMICOLON
 		{: RESULT = ae
+		:}
+		| loc:l PLUSPLUS SEMICOLON 
+		{: RESULT = 
+		:}
+		| loc:l MINUSMINUS SEMICOLON 
+		{: RESULT = 
+		:}
+		| CIN READ loc:l SEMICOLON
+		{: RESULT = 
+		:}
+		| COUT WRITE exp:e SEMICOLON
+		{: RESULT = 
+		:}
+		| IF LPAREN exp:e RPAREN LCURLY varDeclList stmtList:sl RCURLY
+		{: RESULT =
+		:}
+		| IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:sl RCURLY ELSE LCURLY varDeclList:vdl stmtList:sl RCURLY
+		{: RESULT = 
+		:}
+		| WHILE LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:sl RCURLY
+		{: RESULT =
+		:}
+		| RETURN exp:e SEMICOLON
+		{: RESULT = 
+		:}
+		| RETURN SEMICOLON
+		{: RESULT =
+		:}
+		| fncall:fc SEMICOLON
+		{:
 		:}
 		;
 
@@ -295,15 +335,19 @@ term		::= loc:l
 		;
 
 //TODO: complete this rule
-fnCall		::=
+fnCall		::= id:i LPAREN RPAREN
+		{: RESULT =
+		:}
+		| id:i LPAREN actualList:al RPAREN
 		{: RESULT =
 		:}
 		;
 
 //TODO: complete this rule
-actualList	::=
+actualList	::= exp:e
 		{: RESULT =
 		:}
+		| actualList:al COMMA exp:e
 		;
 
 //TODO: complete this rule
@@ -311,7 +355,7 @@ loc		::= id:i
 		{: RESULT =
 		:}
 		| loc:l DOT id:i
-		{:
+		{: RESULT =
 		:}
 		;
 
