@@ -94,7 +94,7 @@ non terminal AssignNode       assignExp; 	//pretty sure this is right
 non terminal ExpNode	      exp;		//good
 non terminal			term; 		//not sure what type this would be
 non terminal			fnCall; 	//CallStmtNode or CallExpNode?
-non terminal LinkedList	      actualList;
+non terminal ExpListNode      actualList;
 non terminal TypeNode         type;		//***given***
 non terminal DotAccessNode    loc; 		//Not sure on type
 non terminal IdNode           id;		//***given***
@@ -161,7 +161,7 @@ varDeclList	::= varDeclList: vdl varDecl: vd
 
 //TODO: complete this rule
 fnDecl		::= type:t id:i formals:f fnBody:fb
-		{: RESULT =
+		{: RESULT = new FnDeclNode(t, i, f, fb);
 		:}
 		;
 

@@ -90,11 +90,11 @@ non terminal FormalDeclNode   formalDecl; 	//good
 non terminal FnBodyNode       fnBody; 		//good
 non terminal StmtListNode     stmtList; 	//pretty sure this is right
 non terminal StmtNode	      stmt; 		//good
-non terminal AssignStmtNode   assignExp; 	//pretty sure this is right, otherwise AssignNode
+non terminal AssignNode       assignExp; 	//pretty sure this is right
 non terminal ExpNode	      exp;		//good
 non terminal			term; 		//not sure what type this would be
 non terminal			fnCall; 	//CallStmtNode or CallExpNode?
-non terminal LinkedList	      actualList;
+non terminal ExpListNode      actualList;
 non terminal TypeNode         type;		//***given***
 non terminal DotAccessNode    loc; 		//Not sure on type
 non terminal IdNode           id;		//***given***
@@ -258,7 +258,7 @@ stmt		::= assignExp:ae SEMICOLON
 
 //TODO: complete this rule
 assignExp	::= loc ASSIGN exp
-		{: RESULT =
+		{: RESULT = new AssignStmtNode(new Assign)
 		:}
 		;
 
