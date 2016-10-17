@@ -160,6 +160,11 @@ class FormalsListNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      Iterator<FormalDeclNodes> itr = myFormals.iterator();
+      while(itr.hasNext()){
+        FormalDeclNodes currentNode = itr.next();
+        currentNode.unparse(p, 0);
+      }
     }
 
     // list of kids (FormalDeclNodes)
@@ -269,6 +274,9 @@ class FormalDeclNode extends DeclNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      myType.unparse(p, 0);
+      IdNode.unparse(p, 0);
+      p.print(";\n");
     }
 
     // 2 kids
@@ -339,7 +347,8 @@ class StructNode extends TypeNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-       p.print("struct ");
+       doIndent(indent);
+       p.print("struct");
        myId.unparse(p, 0);
     }
 
@@ -374,6 +383,7 @@ class PostIncStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       myExp.unparse(p, 0);
       p.print("++;\n");
     }
@@ -388,6 +398,7 @@ class PostDecStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       myExp.unparse(p, 0)
       p.print("--;\n");
     }
@@ -402,6 +413,7 @@ class ReadStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("cin <<");
       myExp.unparse(p, 0);
       p.print(">>;\n");
@@ -417,6 +429,7 @@ class WriteStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("cout <<");
       myExp.unparse(p, 0);
       p.print(">>;\n");
@@ -434,6 +447,7 @@ class IfStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("if (");
       myExp.unparse(p, 0);
       p.print(") {");
@@ -461,6 +475,7 @@ class IfElseStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("if (");
       myExp.unparse(p, 0);
       p.print(") {");
@@ -488,6 +503,7 @@ class WhileStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("while (");
       myExp.unparse(p, 0);
       p.print(") {");
@@ -508,6 +524,7 @@ class CallStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       myCall.unparse(p, 0);
     }
 
@@ -521,6 +538,7 @@ class ReturnStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("return ");
       myExp.unparse(p, 0);
       p.print(";\n")
@@ -545,6 +563,7 @@ class IntLitNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print(myIntVal);
     }
 
@@ -561,6 +580,7 @@ class StringLitNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print(myStrVal);
     }
 
@@ -576,6 +596,7 @@ class TrueNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("true");
     }
 
@@ -590,6 +611,7 @@ class FalseNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("false");
     }
 
@@ -605,6 +627,7 @@ class IdNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        doIndent(indent);
         p.print(myStrVal);
     }
 
@@ -620,6 +643,7 @@ class DotAccessExpNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       myId.unparse(p, 0);
       p.print(".");
       myLoc.unparse(p, 0);
@@ -660,9 +684,8 @@ class CallExpNode extends ExpNode {
         myExpList = new ExpListNode(new LinkedList<ExpNode>());
     }
 
-    // ** unparse **
     public void unparse(PrintWriter p, int indent) {
-
+        doIndent(indent);
         try{
           myId.unparse(p, 0);
           p.print("(");
@@ -716,6 +739,7 @@ class UnaryMinusNode extends UnaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("(-");
       exp.unparse(p, int);
       p.print(")");
@@ -728,6 +752,7 @@ class NotNode extends UnaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("!");
       exp.unparse(p, indent);
     }
@@ -743,6 +768,7 @@ class PlusNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("(");
       exp1.unparse(p, indent);
       p.print(" + ");
@@ -757,6 +783,7 @@ class MinusNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("(");
       exp1.unparse(p, indent);
       p.print(" - ");
@@ -771,6 +798,7 @@ class TimesNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("(");
       exp1.unparse(p, indent);
       p.print("*");
@@ -785,6 +813,7 @@ class DivideNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("(");
       exp1.unparse(p, indent);
       p.print("/");
@@ -799,6 +828,7 @@ class AndNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("(");
       exp1.unparse(p, indent);
       p.print("&&");
@@ -813,6 +843,7 @@ class OrNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("(");
       exp1.unparse(p, indent);
       p.print("||");
@@ -827,6 +858,7 @@ class EqualsNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("(");
       exp1.unparse(p, indent);
       p.print("==");
@@ -841,6 +873,7 @@ class NotEqualsNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        doIndent(indent);
         p.print("(");
         exp1.unparse(p, indent);
         p.print("!=");
@@ -855,6 +888,7 @@ class LessNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("(");
       exp1.unparse(p, indent);
       p.print("<");
@@ -869,6 +903,7 @@ class GreaterNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("(");
       exp1.unparse(p, indent);
       p.print(">");
@@ -883,6 +918,7 @@ class LessEqNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("(");
       exp1.unparse(p, indent);
       p.print("<=");
@@ -897,6 +933,7 @@ class GreaterEqNode extends BinaryExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(indent);
       p.print("(");
       exp1.unparse(p, indent);
       p.print(">=");
