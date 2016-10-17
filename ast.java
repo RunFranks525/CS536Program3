@@ -213,9 +213,9 @@ class ExpListNode extends ASTnode {
 
     public void unparse(PrintWriter p, int indent) {
       doIndent(p, indent);
-      Iterator itr = myExps.iterator();
+      Iterator<ExpNode> itr = myExps.iterator();
       while(itr.hasNext()){
-        ExpNode currentNode = myExps.iterator();
+        ExpNode currentNode = itr.next();
         currentNode.unparse(p, indent + 4);
       }
     }
@@ -284,7 +284,7 @@ class FormalDeclNode extends DeclNode {
     public void unparse(PrintWriter p, int indent) {
       doIndent(p, indent);
       myType.unparse(p, 0);
-      IdNode.unparse(p, 0);
+      myId.unparse(p, 0);
       p.print(";\n");
     }
 
@@ -699,7 +699,7 @@ class CallExpNode extends ExpNode {
         try{
           myId.unparse(p, 0);
           p.print("(");
-          Iterator<ExpNode> itr = new Iterator<ExpNode>();
+          Iterator<ExpNode> itr = myExpList.iterator();
           while(itr.hasNext()) {
             ExpNode currentNode = itr.next();
             currentNode.unparse(p, 0);
