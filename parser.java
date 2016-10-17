@@ -583,7 +583,7 @@ class CUP$parser$actions {
 		int vdleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int vdright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		VarDeclNode vd = (VarDeclNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 List<DeclNode> sb = new LinkedList<DeclNode>());
+		 List<DeclNode> sb = new LinkedList<DeclNode>();
 		   sb.addLast(vd);
 		   RETURN sb;
 		
@@ -621,7 +621,7 @@ class CUP$parser$actions {
 		int fdleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int fdright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		FormalDeclNode fd = (FormalDeclNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 FormalsListNode fl = new FormalsListNode()
+		 FormalsListNode fl = new FormalsListNode();
 		   RESULT = fl.addLast(fd);
 		
               CUP$parser$result = parser.getSymbolFactory().newSymbol("formalsList",9, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
@@ -710,7 +710,7 @@ class CUP$parser$actions {
 		int aeleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int aeright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		AssignNode ae = (AssignNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 RESULT = ae
+		 RESULT = ae;
 		
               CUP$parser$result = parser.getSymbolFactory().newSymbol("stmt",13, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -877,7 +877,7 @@ class CUP$parser$actions {
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		ExpNode e = (ExpNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = new AssignNode(l, e)
+		 RESULT = new AssignNode(l, e);
 		
               CUP$parser$result = parser.getSymbolFactory().newSymbol("assignExp",14, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -967,7 +967,7 @@ class CUP$parser$actions {
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		ExpNode e = (ExpNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = new NotNode(e)
+		 RESULT = new NotNode(e);
 		
               CUP$parser$result = parser.getSymbolFactory().newSymbol("exp",15, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

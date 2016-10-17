@@ -177,7 +177,7 @@ structBody	::= structBody:sb varDecl:vd
 		   RESULT = sb;
 		:}
 		| varDecl:vd
-		{: List<DeclNode> sb = new LinkedList<DeclNode>());
+		{: List<DeclNode> sb = new LinkedList<DeclNode>();
 		   sb.addLast(vd);
 		   RETURN sb;
 		:}
@@ -194,7 +194,7 @@ formals		::= LPAREN RPAREN
 
 //TODO: complete this rule
 formalsList	::= formalDecl:fd
-		{: FormalsListNode fl = new FormalsListNode()
+		{: FormalsListNode fl = new FormalsListNode();
 		   RESULT = fl.addLast(fd);
 		:}
 		| formalDecl:fd COMMA formalsList:fl
@@ -226,7 +226,7 @@ stmtList	::= stmtList:sl stmt:s
 
 //TODO: complete this rule
 stmt		::= assignExp:ae SEMICOLON
-		{: RESULT = ae
+		{: RESULT = ae;
 		:}
 		| loc:l PLUSPLUS SEMICOLON 
 		{: RESULT = new PostIncStmtNode(l);
@@ -262,7 +262,7 @@ stmt		::= assignExp:ae SEMICOLON
 
 //TODO: complete this rule
 assignExp	::= loc:l ASSIGN exp:e
-		{: RESULT = new AssignNode(l, e)
+		{: RESULT = new AssignNode(l, e);
 		:}
 		;
 
@@ -339,7 +339,7 @@ term		::= loc:l
 		;
 
 //TODO: complete this rule
-fnCall		::= id:i LPAREN RPAREN //no args
+fncall		::= id:i LPAREN RPAREN //no args
 		{: RESULT = new CallExpNode(i, new ExpListNode(new LinkedList<ExpNode>()));
 		:}
 		| id:i LPAREN actualList:al RPAREN //args = actualList
