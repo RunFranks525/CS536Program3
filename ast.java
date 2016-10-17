@@ -160,6 +160,7 @@ class FormalsListNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(p, indent);
       Iterator<FormalDeclNode> itr = myFormals.iterator();
       while(itr.hasNext()){
         FormalDeclNode currentNode = itr.next();
@@ -178,8 +179,8 @@ class FnBodyNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-      myDeclList.unparse(p, 4);
-      myStmtList.unparse(p, 4);
+      myDeclList.unparse(p, indent + 4);
+      myStmtList.unparse(p, indent + 4);
     }
 
     // 2 kids
@@ -193,10 +194,11 @@ class StmtListNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+      doIndent(p, indent);
       Iterator<StmtNode> itr = myStmts.iterator();
       while(itr.hasNext()){
         StmtNode currentStmt = itr.next();
-        currentStmt.unparse(p, 0);
+        currentStmt.unparse(p, indent + 4);
       }
     }
 
@@ -210,11 +212,11 @@ class ExpListNode extends ASTnode {
     }
 
     public void unparse(PrintWriter p, int indent) {
-      doIndent(p, 0);
+      doIndent(p, indent);
       Iterator itr = myExps.iterator();
       while(itr.hasNext()){
         ExpNode currentNode = myExps.iterator();
-        currentNode.unparse(p, indent);
+        currentNode.unparse(p, indent + 4);
       }
     }
 
@@ -238,9 +240,9 @@ class VarDeclNode extends DeclNode {
 
     public void unparse(PrintWriter p, int indent) {
         doIndent(p, indent);
-        myType.unparse(p, 0);
+        myType.unparse(p, indent);
         p.print(" ");
-        myId.unparse(p, 0);
+        myId.unparse(p, indent);
         p.println(";");
     }
 
@@ -749,8 +751,7 @@ class UnaryMinusNode extends UnaryExpNode {
     public void unparse(PrintWriter p, int indent) {
       doIndent(p, indent);
       p.print("(-");
-      exp.unparse(p, 0);
-
+      myExp.unparse(p, 0);
       p.print(")");
     }
 }
@@ -763,7 +764,7 @@ class NotNode extends UnaryExpNode {
     public void unparse(PrintWriter p, int indent) {
       doIndent(p, indent);
       p.print("!");
-      exp.unparse(p, indent);
+      myExp.unparse(p, indent);
     }
 }
 
