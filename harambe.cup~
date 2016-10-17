@@ -92,11 +92,11 @@ non terminal StmtListNode     stmtList; 	//pretty sure this is right
 non terminal StmtNode	      stmt; 		//good
 non terminal AssignNode       assignExp; 	//pretty sure this is right
 non terminal ExpNode	      exp;		//good
-non terminal			term; 		//not sure what type this would be
-non terminal			fnCall; 	//CallStmtNode or CallExpNode?
+non terminal ExpNode	      term; 		//not sure what type this would be
+non terminal CallExpNode      fnCall; 		//or CallStmtNode?
 non terminal ExpListNode      actualList;
 non terminal TypeNode         type;		//***given***
-non terminal ExpNode	      loc; 		//Not sure on type
+non terminal DotAccessExpNode    loc; 		//Not sure on type
 non terminal IdNode           id;		//***given***
  
  
@@ -328,38 +328,43 @@ term		::= loc:l
 		{: RESULT = new TrueNode();
 		:}
 		| FALSE
-		{: RESULT = new FalseNode;
+		{: RESULT = new FalseNode();
 		:}
 		| LPAREN exp:e RPAREN
-		{: RESULT = //something
+		{: RESULT = e;
 		:}
 		| fncall:f
-		{: RESULT = //something
+		{: RESULT = f;
 		:}
 		;
 
 //TODO: complete this rule
-fnCall		::= id:i LPAREN RPAREN
-		{: RESULT =
+fnCall		::= id:i LPAREN RPAREN //no args
+		{: RESULT = new CallExpNode(i, new ExpListNode(new LinkedList<ExpNode>()));
 		:}
-		| id:i LPAREN actualList:al RPAREN
-		{: RESULT =
+		| id:i LPAREN actualList:al RPAREN //args = actualList
+		{: RESULT = new CallExpNode(i, al);
 		:}
 		;
 
 //TODO: complete this rule
 actualList	::= exp:e
-		{: RESULT =
+		{: List<ExpNode> al = new LinkedList<ExpNode>();
+		   al.addFirst(e);
+		  RESULT = new ExpListNode(al);
 		:}
 		| actualList:al COMMA exp:e
+		{: al.addLast(e);
+		   RESULT = al;
+		:}
 		;
 
 //TODO: complete this rule
 loc		::= id:i
-		{: RESULT = new IdNode();
+		{: RESULT = new DotAccessExpNode(new ExpNode(), i); //YIKES I DON'T KNOW IF THIS IS RIGHT
 		:}
 		| loc:l DOT id:i
-		{: l.add
+		{: RESULT = new DotAccessExpNode(l, i);
 		:}
 		;
 
