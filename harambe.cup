@@ -136,6 +136,12 @@ declList        ::= declList:dl decl:d
 decl            ::= varDecl:v
                 {: RESULT = v;
                 :}
+		| fnDecl: fd 
+		{: RESULT = fd;
+		:}
+		| structDecl:sd
+		{: RESULT = sd;
+		:}
                 ;
 
 varDecl         ::= type:t id:i SEMICOLON
