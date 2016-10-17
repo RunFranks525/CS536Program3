@@ -93,7 +93,7 @@ non terminal StmtNode	      stmt; 		//good
 non terminal AssignNode       assignExp; 	//pretty sure this is right
 non terminal ExpNode	      exp;		//good
 non terminal ExpNode	      term; 		//not sure what type this would be
-non terminal CallExpNode      fnCall; 		//or CallStmtNode?
+non terminal CallExpNode      fncall; 		//or CallStmtNode?
 non terminal ExpListNode      actualList;
 non terminal TypeNode         type;		//***given***
 non terminal DotAccessExpNode    loc; 		//Not sure on type
@@ -235,10 +235,10 @@ stmt		::= assignExp:ae SEMICOLON
 		{: RESULT = new PostDecStmtNode(l);
 		:}
 		| CIN READ loc:l SEMICOLON
-		{: RESULT = new ReadStmtNode();
+		{: RESULT = new ReadStmtNode(l);
 		:}
 		| COUT WRITE exp:e SEMICOLON
-		{: RESULT = new WriteStmtNode();
+		{: RESULT = new WriteStmtNode(e);
 		:}
 		| IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:sl RCURLY
 		{: RESULT = new IfStmtNode(e, vdl, sl);
@@ -321,7 +321,7 @@ term		::= loc:l
 		| INTLITERAL:ilit
 		{: RESULT = new IntLitNode(ilit.lineNum, ilit.charNum, ilit.intval);
 		:}
-		| SRINGLITERAL:strlit
+		| STRINGLITERAL:strlit
 		{: RESULT = new StringLitNode(strlit.lineNum, strlit.charNum, strlit.strVal);
 		:}
 		| TRUE

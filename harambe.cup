@@ -93,7 +93,7 @@ non terminal StmtNode	      stmt; 		//good
 non terminal AssignNode       assignExp; 	//pretty sure this is right
 non terminal ExpNode	      exp;		//good
 non terminal ExpNode	      term; 		//not sure what type this would be
-non terminal CallExpNode      fnCall; 		//or CallStmtNode?
+non terminal CallExpNode      fncall; 		//or CallStmtNode?
 non terminal ExpListNode      actualList;
 non terminal TypeNode         type;		//***given***
 non terminal DotAccessExpNode    loc; 		//Not sure on type
@@ -321,7 +321,7 @@ term		::= loc:l
 		| INTLITERAL:ilit
 		{: RESULT = new IntLitNode(ilit.lineNum, ilit.charNum, ilit.intval);
 		:}
-		| SRINGLITERAL:strlit
+		| STRINGLITERAL:strlit
 		{: RESULT = new StringLitNode(strlit.lineNum, strlit.charNum, strlit.strVal);
 		:}
 		| TRUE
@@ -339,7 +339,7 @@ term		::= loc:l
 		;
 
 //TODO: complete this rule
-fnCall		::= id:i LPAREN RPAREN //no args
+fncall		::= id:i LPAREN RPAREN //no args
 		{: RESULT = new CallExpNode(i, new ExpListNode(new LinkedList<ExpNode>()));
 		:}
 		| id:i LPAREN actualList:al RPAREN //args = actualList
